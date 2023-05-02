@@ -1,0 +1,7 @@
+.register {
+    margin-top: 60px;
+   font-family: Inter;
+   display: flex;
+   flex-direction: column;
+   justify-content: flex-start;
+}

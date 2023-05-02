@@ -1,0 +1,4 @@
+.element__like_active {
+  opacity: 100%;
+  background: url(../../../../images/Blacklike_icon.svg);
+}

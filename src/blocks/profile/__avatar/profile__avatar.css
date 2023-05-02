@@ -1,0 +1,33 @@
+.profile__avatar {
+  width: 168.75px;
+  height: 127.5px;
+  margin-left: -22.5px;
+  position: relative;
+}
+
+.profile__avatar::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url(../../../images/Edit_icon.svg);
+  background-size: 26px 26px;
+  background-repeat: no-repeat;
+  background-position: 60%;
+  background-color: rgb(0 0 0 / 0.8);
+  opacity: 0;
+  transition: opacity .5s ease;
+}
+
+.profile__avatar:hover::before {
+  opacity: 1;
+}
+
+@media screen and (max-width: 767px) {
+  .profile__avatar {
+    margin: 0 53.75px 22px 59.5px;
+  }
+}

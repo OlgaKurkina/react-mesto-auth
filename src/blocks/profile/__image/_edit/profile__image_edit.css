@@ -1,0 +1,15 @@
+.profile__image_edit {
+    visibility: hidden;
+    position: absolute;
+    top: 47px;
+    left: 47px;
+    width: 26px;
+    height: 26px;
+    z-index: 5;
+}
+
+.profile__image_edit:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+    visibility: visible;
+    z-index: 20;
+}

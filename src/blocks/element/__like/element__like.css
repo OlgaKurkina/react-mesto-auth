@@ -1,0 +1,16 @@
+.element__like {
+  width: 22px;
+  height: 19px;
+  margin: 22px 22px 0 0;
+  padding: 0;
+  border: none;
+  background: url(../../../images/Like_icon.svg);
+  object-fit: contain;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  box-sizing: content-box;
+}
+
+.element__like:hover {
+  opacity: 50%;
+}

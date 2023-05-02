@@ -1,0 +1,6 @@
+.element__like-container {
+    display: flex;
+    flex-direction: column;
+    height: 79px;
+    margin: 0;
+}
