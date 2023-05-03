@@ -29,14 +29,29 @@ function App() {
   const [isConfirmPopupOpen, setisConfirmPopupOpen] = React.useState(false);
   const [deletedCard, setDeletedCard] = React.useState(null);
 
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  const [userData, setUserData] = React.useState({
-    email: "",
-    password: "",
-  });
+  const [loggedIn, setLoggedIn] = React.useState(false);
+  //const [userData, setUserData] = React.useState({
+  //  email: "",
+  //  password: "",
+  //});
   const navigate = useNavigate();
 
-  const [token, setToken] = React.useState("");
+  // const [token, setToken] = React.useState("");
+
+  const tokenCheck = () => {
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      auth.checkToken(jwt).then((res) => {
+        if (res) {
+          setLoggedIn(true);
+          navigate("/", { replace: true });
+        }
+      });
+    }
+  };
+  React.useEffect(() => {
+    tokenCheck();
+  }, []);
 
   // React.useEffect(() => {
   //   auth.getUserInfo(token).then((user) => {
@@ -46,41 +61,51 @@ function App() {
   //   });
   // }, [token]);
 
-  const registerUser = (formValue) => {
-    auth
-      .register(formValue.email, formValue.password)
-      .then((res) => {
-        localStorage.setItem("jwt", res.jwt);
-        setToken(res.jwt);
-        auth.getUserInfo(res.jwt).then((res) => {
-          setUserData({
-            email: res.email,
-            password: res.password,
-          });
-        });
-      })
-      .catch((err) => console.log(err));
-  };
+  //const registerUser = (formValue) => {
+  //  auth
+  //    .register(formValue.email, formValue.password)
+  //    .then((res) => {
+  //      localStorage.setItem("jwt", res.jwt);
+  //      setToken(res.jwt);
+  //      auth.getUserInfo(res.jwt).then((res) => {
+  //        setUserData({
+  //          email: res.email,
+  //          password: res.password,
+  //        });
+  //      });
+  //    })
+  //    .catch((err) => console.log(err));
+  //};
 
-  const loginUser = (formValue) => {
-    if (!formValue.email || !formValue.password) {
-      return;
-    }
-    auth
-      .authorize(formValue.email, formValue.password)
-      .then((data) => {
-        if (data.jwt) {
-          setUserData({ email: "", password: "" });
-          handleLogin();
-          navigate("/", { replace: true });
-        }
-      })
-      .catch((err) => console.log(err));
-  };
+  //const loginUser = (formValue) => {
+  //  if (!formValue.email || !formValue.password) {
+  //    return;
+  //  }
+  //  auth
+  //    .authorize(formValue.email, formValue.password)
+  //    .then((res) => {
+  //      localStorage.setItem("jwt", res.jwt);
+  //      setToken(res.jwt);
+  //      auth.getUserInfo(res.jwt).then((res) => {
+  //        setUserData({
+  //          email: res.email,
+  //          password: res.password,
+  //        });
+  //      });
+  //    })
+  //  .then((data) => {
+  //     if (data.jwt) {
+  //      setUserData({ email: "", password: "" });
+  //      handleLogin();
+  //      navigate("/", { replace: true });
+  //    }
+  //  })
+  //     .catch((err) => console.log(err));
+  // };
 
   const handleLogin = (evt) => {
     evt.preventDefault();
-    setIsLoggedIn(true);
+    setLoggedIn(true);
   };
 
   React.useEffect(() => {
@@ -218,7 +243,7 @@ function App() {
             <Route
               path="/"
               element={
-                isLoggedIn ? (
+                loggedIn ? (
                   <Navigate to="/" replace />
                 ) : (
                   <Navigate to="/login" replace />
@@ -240,16 +265,15 @@ function App() {
                       onCardDelete={handleConfirmPopup}
                     />
                   }
-                  loggedIn={isLoggedIn}
-                  userData={userData}
+                  loggedIn={loggedIn}
                 />
               }
             />
-            <Route path="/login" element={<Login loginUser={loginUser} />} />
             <Route
-              path="/register"
-              element={<Register registetUser={registerUser} />}
+              path="/login"
+              element={<Login handleLogin={handleLogin} />}
             />
+            <Route path="/register" element={<Register />} />
           </Routes>
 
           <EditProfilePopup

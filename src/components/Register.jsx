@@ -2,27 +2,27 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import * as auth from "./auth.js";
 
-const Register = ({ registerUser }) => {
+const Register = () => {
   const [formValue, setFormValue] = useState({
     email: "",
     password: "",
   });
   const navigate = useNavigate();
 
-  const handleChange = (evt) => {
+  function handleChange(evt) {
     const { name, value } = evt.target;
 
     setFormValue({
       ...formValue,
       [name]: value,
     });
-  };
+  }
+
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    // registerUser(formValue);
-
-    const { email, password } = formValue;
-    auth.register(email, password);
+    auth.register(formValue.email, formValue.password).then((res) => {
+      navigate("/login", { replace: true });
+    });
   };
 
   return (
@@ -32,7 +32,7 @@ const Register = ({ registerUser }) => {
         <input
           className="register__input"
           type="email"
-          name="register-email"
+          name="email"
           id="register-email"
           placeholder="Email"
           value={formValue.email}
@@ -42,7 +42,7 @@ const Register = ({ registerUser }) => {
         <input
           className="register__input"
           type="password"
-          name="register-password"
+          name="password"
           id="register-password"
           value={formValue.password}
           onChange={handleChange}

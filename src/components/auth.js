@@ -43,7 +43,20 @@ export const authorize = (email, password) => {
     .catch((err) => console.log(err));
 };
 
-export const getUserInfo = (token) => {
+//xport const getUserInfo = (token) => {
+// return fetch(`${BASE_URL}/users/me`, {
+//   method: "GET",
+//   headers: {
+//     Accept: "application/json",
+//     "Content-Type": "application/json",
+//     Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+//   },
+// })
+//   .then((res) => res.json())
+//   .then((data) => data);
+//;
+
+export const checkToken = (token) => {
   return fetch(`${BASE_URL}/users/me`, {
     method: "GET",
     headers: {

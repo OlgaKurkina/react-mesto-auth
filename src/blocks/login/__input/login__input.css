@@ -8,7 +8,7 @@
   box-sizing: border-box;
   border-bottom: 1px solid rgba(204, 204, 204, 1);
   padding: 0 0 8px 0;
-  padding: 0;
+  color: rgba(255, 255, 255, 1);
 }
 
 /*.login__input:nth-child(2n) {

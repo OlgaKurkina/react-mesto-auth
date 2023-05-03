@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-//import { Link } from "react-router-dom";
-//import * as auth from "./auth.js";
+import { useNavigate } from "react-router-dom";
+import * as auth from "./auth.js";
 
-const Login = ({ loginUser }) => {
+const Login = ({ handleLogin }) => {
   const [formValue, setFormValue] = useState({
     email: "",
     password: "",
   });
+  const navigate = useNavigate();
 
   const handleChange = (evt) => {
     const { name, value } = evt.target;
@@ -17,8 +18,22 @@ const Login = ({ loginUser }) => {
   };
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    loginUser(formValue);
+
+    if (!formValue.email || !formValue.password) {
+      return;
+    }
+    auth
+      .authorize(formValue.email, formValue.password)
+      .then((res) => {
+        if (res.jwt) {
+          setFormValue({ email: "", password: "" });
+          handleLogin();
+          navigate("/", { replace: true });
+        }
+      })
+      .catch((err) => console.log(err));
   };
+
   return (
     <div className="login">
       <h2 className="login__welcome welcome">Вход</h2>
@@ -26,17 +41,17 @@ const Login = ({ loginUser }) => {
         <input
           className="login__input"
           type="email"
-          name="login-email"
+          name="email"
           id="login-email"
           placeholder="Email"
-          value={formValue.email || ""}
+          value={formValue.email}
           onChange={handleChange}
           required
         />
         <input
           className="login__input"
           type="password"
-          name="login-password"
+          name="password"
           id="login-password"
           placeholder="Пароль"
           value={formValue.password}
