@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-//import * as auth from "./auth.js";
 
 const Register = ({ onRegister }) => {
   const [formValue, setFormValue] = useState({
