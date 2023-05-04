@@ -64,7 +64,11 @@
 @import url(../src/blocks/register/__button/register__button.css);
 @import url(../src/blocks/register/__signin/register__signin.css);
 @import url(../src/blocks/register/__login-link/register__login-link.css);
-@import url(../src/blocks/header/__login-link/header__login-link.css);
+@import url(../src/blocks/header/__link/header__link.css);
+@import url(../src/blocks/header/__email/header__email.css);
+@import url(../src/blocks/header/__routes/header__routes.css);
+@import url(../src/blocks/infotooltip/__img/infotooltip__img.css);
+@import url(../src/blocks/infotooltip/__title/infotooltip__title.css);
 /*
 * {
     outline: 1px solid green;

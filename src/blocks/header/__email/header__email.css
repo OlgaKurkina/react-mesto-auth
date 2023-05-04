@@ -1,0 +1,9 @@
+.header__email {
+  color:rgba(255, 255, 255, 1);
+  font-size: 18px;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+	margin-right: 24px;
+
+}
