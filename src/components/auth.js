@@ -1,7 +1,7 @@
-export const BASE_URL = "https://api.nomoreparties.co";
+export const BASE_URL = "https://auth.nomoreparties.co/";
 
 export const register = (email, password) => {
-  return fetch(`${BASE_URL}/auth/local/register`, {
+  return fetch(`${BASE_URL}/singup`, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -10,13 +10,7 @@ export const register = (email, password) => {
     body: JSON.stringify({ email, password }),
   })
     .then((response) => {
-      try {
-        if (response.status === 200) {
-          return response.json();
-        }
-      } catch (err) {
-        return err;
-      }
+      return response.json();
     })
     .then((res) => {
       return res;
@@ -25,7 +19,7 @@ export const register = (email, password) => {
 };
 
 export const authorize = (email, password) => {
-  return fetch(`${BASE_URL}/auth/local`, {
+  return fetch(`${BASE_URL}/singin`, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -33,28 +27,15 @@ export const authorize = (email, password) => {
     },
     body: JSON.stringify({ email, password }),
   })
-    .then((res) => res.json())
+    .then((response) => response.json())
     .then((data) => {
-      if (data.jwt) {
+      if (data.user) {
         localStorage.setItem("jwt", data.jwt);
         return data;
       }
     })
     .catch((err) => console.log(err));
 };
-
-//xport const getUserInfo = (token) => {
-// return fetch(`${BASE_URL}/users/me`, {
-//   method: "GET",
-//   headers: {
-//     Accept: "application/json",
-//     "Content-Type": "application/json",
-//     Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-//   },
-// })
-//   .then((res) => res.json())
-//   .then((data) => data);
-//;
 
 export const checkToken = (token) => {
   return fetch(`${BASE_URL}/users/me`, {

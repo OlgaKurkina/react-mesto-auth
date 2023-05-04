@@ -9,17 +9,17 @@ export default function Header({ email, onSingOut }) {
       <div className="header__routes">
         <Routes>
           <Route
-            path="/login"
+            path="/singin"
             element={
-              <Link to="/register" className="header__link">
+              <Link to="/singup" className="header__link">
                 Регистрация
               </Link>
             }
           />
           <Route
-            path="/register"
+            path="/singup"
             element={
-              <Link to="/login" className="header__link">
+              <Link to="/singin" className="header__link">
                 Вход
               </Link>
             }

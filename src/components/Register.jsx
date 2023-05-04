@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Register = ({ onRegister }) => {
   const [formValue, setFormValue] = useState({
     email: "",
     password: "",
   });
-  const navigate = useNavigate();
 
   function handleChange(evt) {
     const { name, value } = evt.target;
@@ -19,7 +18,7 @@ const Register = ({ onRegister }) => {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    onRegister(formValue.email, formValue.password);
+    onRegister(formValue);
   };
 
   return (
@@ -57,8 +56,8 @@ const Register = ({ onRegister }) => {
       </form>
       <div className="register__signin">
         <p>
-          Уже зарегистрированы?
-          <Link to="/login" className="register__login-link">
+          Уже зарегистрированы?{" "}
+          <Link to="/singin" className="register__login-link">
             Войти
           </Link>
         </p>

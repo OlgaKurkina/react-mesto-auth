@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
@@ -37,8 +37,8 @@ function App() {
   const navigate = useNavigate();
 
   const tokenCheck = () => {
-    if (localStorage.getItem("jwt")) {
-      const jwt = localStorage.getItem("jwt");
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
       auth.checkToken(jwt).then((res) => {
         if (res) {
           setLoggedIn(true);
@@ -51,49 +51,51 @@ function App() {
 
   React.useEffect(() => {
     tokenCheck();
-  }, []);
+  });
 
-  const handleLogin = (email, password) => {
-    if (!email || !password) {
-      return;
-    }
+  const handleLogin = ({ email, password }) => {
     auth
       .authorize(email, password)
       .then((res) => {
         if (res) {
           setLoggedIn(true);
-          localStorage.setItem("jwt", res.token);
+          localStorage.setItem("jwt", res.jwt);
           navigate("/", { replace: true });
         }
       })
       .catch((err) => console.log(err));
   };
 
-  function handlRegister(email, password) {
+  function handleRegister({ email, password }) {
     auth
       .register(email, password)
       .then((res) => {
-        navigate("/login", { replace: true });
-        setIsConfirm(true);
-        setIsInfoToolTipOpen(true);
+        console.log(res.jwt);
+        if (res) {
+          navigate("/singin", { replace: true });
+          setIsConfirm(true);
+          setIsInfoToolTipOpen(true);
+        }
       })
       .catch((err) => {
         setIsConfirm(false);
-        setIsInfoToolTipOpen(false);
+        setIsInfoToolTipOpen(true);
         console.log(err);
       });
   }
 
   React.useEffect(() => {
-    api
-      .getCards()
-      .then((cards) => {
-        setCards(cards);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+    if (loggedIn) {
+      api
+        .getCards()
+        .then((cards) => {
+          setCards(cards);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [loggedIn]);
 
   function handleAddPlaceSubmit(item) {
     setIsLoading(true);
@@ -139,15 +141,17 @@ function App() {
   }
 
   React.useEffect(() => {
-    api
-      .getUserData()
-      .then((data) => {
-        setCurrentUser(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+    if (loggedIn) {
+      api
+        .getUserData()
+        .then((data) => {
+          setCurrentUser(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [loggedIn]);
 
   function handleUpdateUser(newData) {
     setIsLoading(true);
@@ -233,10 +237,10 @@ function App() {
                 />
               }
             />
-            <Route path="/login" element={<Login onLogin={handleLogin} />} />
+            <Route path="/singin" element={<Login onLogin={handleLogin} />} />
             <Route
-              path="/register"
-              element={<Register onRegister={handlRegister} />}
+              path="/singup"
+              element={<Register onRegister={handleRegister} />}
             />
           </Routes>
 
