@@ -33,10 +33,7 @@ function App() {
   const [isConfirm, setIsConfirm] = React.useState(false);
   const [isInfoToolTipOpen, setIsInfoToolTipOpen] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
-  //const [userData, setUserData] = React.useState({
-  //  email: "",
-  //  password: "",
-  //});
+  const [isUserEmail, setIsUserEmail] = React.useState("");
   const navigate = useNavigate();
 
   // const [token, setToken] = React.useState("");
@@ -47,6 +44,7 @@ function App() {
       auth.checkToken(jwt).then((res) => {
         if (res) {
           setLoggedIn(true);
+          setIsUserEmail(res.email);
           navigate("/", { replace: true });
         }
       });
@@ -57,59 +55,20 @@ function App() {
     tokenCheck();
   }, []);
 
-  // React.useEffect(() => {
-  //   auth.getUserInfo(token).then((user) => {
-  //     setUserData(user);
-  //     setIsLoggedIn(true);
-  //     // navigate("/");
-  //   });
-  // }, [token]);
-
-  //const registerUser = (formValue) => {
-  //  auth
-  //    .register(formValue.email, formValue.password)
-  //    .then((res) => {
-  //      localStorage.setItem("jwt", res.jwt);
-  //      setToken(res.jwt);
-  //      auth.getUserInfo(res.jwt).then((res) => {
-  //        setUserData({
-  //          email: res.email,
-  //          password: res.password,
-  //        });
-  //      });
-  //    })
-  //    .catch((err) => console.log(err));
-  //};
-
-  //const loginUser = (formValue) => {
-  //  if (!formValue.email || !formValue.password) {
-  //    return;
-  //  }
-  //  auth
-  //    .authorize(formValue.email, formValue.password)
-  //    .then((res) => {
-  //      localStorage.setItem("jwt", res.jwt);
-  //      setToken(res.jwt);
-  //      auth.getUserInfo(res.jwt).then((res) => {
-  //        setUserData({
-  //          email: res.email,
-  //          password: res.password,
-  //        });
-  //      });
-  //    })
-  //  .then((data) => {
-  //     if (data.jwt) {
-  //      setUserData({ email: "", password: "" });
-  //      handleLogin();
-  //      navigate("/", { replace: true });
-  //    }
-  //  })
-  //     .catch((err) => console.log(err));
-  // };
-
-  const handleLogin = () => {
-    // evt.preventDefault();
-    setLoggedIn(true);
+  const handleLogin = (email, password) => {
+    if (!email || !password) {
+      return;
+    }
+    auth
+      .authorize(email, password)
+      .then((res) => {
+        if (res) {
+          setLoggedIn(true);
+          localStorage.setItem("jwt", res.token);
+          navigate("/", { replace: true });
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
   function handlRegister(email, password) {
@@ -258,7 +217,7 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="root">
         <div className="content">
-          <Header />
+          <Header email={isUserEmail} />
           <Routes>
             <Route
               path="/"
@@ -276,10 +235,7 @@ function App() {
                 />
               }
             />
-            <Route
-              path="/login"
-              element={<Login handleLogin={handleLogin} />}
-            />
+            <Route path="/login" element={<Login onLogin={handleLogin} />} />
             <Route
               path="/register"
               element={<Register onRegister={handlRegister} />}

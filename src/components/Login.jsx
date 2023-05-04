@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as auth from "./auth.js";
 
-const Login = ({ handleLogin }) => {
+const Login = ({ onLogin }) => {
   const [formValue, setFormValue] = useState({
     email: "",
     password: "",
@@ -18,20 +18,7 @@ const Login = ({ handleLogin }) => {
   };
   const handleSubmit = (evt) => {
     evt.preventDefault();
-
-    if (!formValue.email || !formValue.password) {
-      return;
-    }
-    auth
-      .authorize(formValue.email, formValue.password)
-      .then((res) => {
-        //  if (res.jwt) {
-        setFormValue({ email: "", password: "" });
-        handleLogin();
-        navigate("/", { replace: true });
-        //   }
-      })
-      .catch((err) => console.log(err));
+    onLogin(formValue.email, formValue.password);
   };
 
   return (
