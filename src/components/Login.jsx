@@ -25,11 +25,11 @@ const Login = ({ handleLogin }) => {
     auth
       .authorize(formValue.email, formValue.password)
       .then((res) => {
-        if (res.jwt) {
-          setFormValue({ email: "", password: "" });
-          handleLogin();
-          navigate("/", { replace: true });
-        }
+        //  if (res.jwt) {
+        setFormValue({ email: "", password: "" });
+        handleLogin();
+        navigate("/", { replace: true });
+        //   }
       })
       .catch((err) => console.log(err));
   };

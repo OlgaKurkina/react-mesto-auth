@@ -39,8 +39,8 @@ function App() {
   // const [token, setToken] = React.useState("");
 
   const tokenCheck = () => {
-    const jwt = localStorage.getItem("jwt");
-    if (jwt) {
+    if (localStorage.getItem("jwt")) {
+      const jwt = localStorage.getItem("jwt");
       auth.checkToken(jwt).then((res) => {
         if (res) {
           setLoggedIn(true);
@@ -49,9 +49,10 @@ function App() {
       });
     }
   };
+
   React.useEffect(() => {
     tokenCheck();
-  }, []);
+  }, [setLoggedIn]);
 
   // React.useEffect(() => {
   //   auth.getUserInfo(token).then((user) => {
@@ -103,8 +104,8 @@ function App() {
   //     .catch((err) => console.log(err));
   // };
 
-  const handleLogin = (evt) => {
-    evt.preventDefault();
+  const handleLogin = () => {
+    // evt.preventDefault();
     setLoggedIn(true);
   };
 
