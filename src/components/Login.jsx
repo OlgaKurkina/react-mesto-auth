@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Login = ({ onLogin }) => {
+const Login = ({ onLogin, onLoading }) => {
   const [formValue, setFormValue] = useState({
     email: "",
     password: "",
@@ -49,7 +49,7 @@ const Login = ({ onLogin }) => {
           name="submit-btn"
           id="submit-btn"
         >
-          Войти
+          {onLoading ? "Сохранение..." : "Войти"}
         </button>
       </form>
     </div>

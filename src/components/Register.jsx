@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-const Register = ({ onRegister }) => {
+const Register = ({ onRegister, onLoading }) => {
   const [formValue, setFormValue] = useState({
     email: "",
     password: "",
@@ -18,7 +18,7 @@ const Register = ({ onRegister }) => {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    onRegister(formValue);
+    onRegister(formValue.email, formValue.password);
   };
 
   return (
@@ -34,7 +34,6 @@ const Register = ({ onRegister }) => {
           value={formValue.email}
           onChange={handleChange}
         />
-
         <input
           className="register__input"
           type="password"
@@ -51,13 +50,13 @@ const Register = ({ onRegister }) => {
           id="submit-button"
           onSubmit={handleSubmit}
         >
-          Зарегистрироваться
+          {onLoading ? "Сохранение..." : "Зарегистрироваться"}
         </button>
       </form>
       <div className="register__signin">
-        <p>
+        <p className="register__signin-text">
           Уже зарегистрированы?{" "}
-          <Link to="/singin" className="register__login-link">
+          <Link to="/signin" className="register__login-link">
             Войти
           </Link>
         </p>

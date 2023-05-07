@@ -1,0 +1,19 @@
+.header__logout {
+  border-style: none;
+	height: 22px;
+  margin: 7px 0 0 0;
+  padding: 0;
+  background-color: rgba(0, 0, 0, 1);
+  color: rgba(169, 169, 169, 1);
+  font-size: 18px;
+  line-height: 100%;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 767px) {
+  .header__logout {
+    margin-right: 30px;
+    font-size: 14px;
+  }
+}

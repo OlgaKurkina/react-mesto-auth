@@ -3,7 +3,12 @@
   font-size: 18px;
   line-height: 1.2;
   text-decoration: none;
-  cursor: pointer;
-	margin-right: 24px;
+	margin: 6px 24px 0 0;
+}
 
+@media screen and (max-width: 767px) {
+  .header__email {
+    font-size: 14px;
+    margin: 8px 24px 0 0;
+  }
 }

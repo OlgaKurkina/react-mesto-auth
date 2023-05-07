@@ -12,7 +12,7 @@ import Login from "./Login";
 import Register from "./Register";
 import ProtectedRouteElement from "./ProtectedRoute";
 import InfoTooltip from "./InfoTooltip";
-import * as auth from "./auth.js";
+import * as auth from "../utils/auth.js";
 
 import { api } from "../utils/Api";
 import { CurrentUserContext } from "../context/CurrentUserContext";
@@ -29,50 +29,55 @@ function App() {
   const [isLoading, setIsLoading] = React.useState(false);
   const [isConfirmPopupOpen, setisConfirmPopupOpen] = React.useState(false);
   const [deletedCard, setDeletedCard] = React.useState(null);
-
   const [isConfirm, setIsConfirm] = React.useState(false);
   const [isInfoToolTipOpen, setIsInfoToolTipOpen] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [isUserEmail, setIsUserEmail] = React.useState("");
-  const navigate = useNavigate();
 
-  const tokenCheck = () => {
-    const jwt = localStorage.getItem("jwt");
-    if (jwt) {
-      auth.checkToken(jwt).then((res) => {
-        if (res) {
-          setLoggedIn(true);
-          setIsUserEmail(res.email);
-          navigate("/", { replace: true });
-        }
-      });
-    }
-  };
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     tokenCheck();
-  });
+  }, []);
 
-  const handleLogin = ({ email, password }) => {
+  //проверка токена
+  const tokenCheck = () => {
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      auth
+        .checkToken(jwt)
+        .then((res) => {
+          if (res) {
+            setLoggedIn(true);
+            navigate("/", { replace: true });
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
+  //авторизация
+  const handleLogin = (email, password) => {
     auth
       .authorize(email, password)
       .then((res) => {
         if (res) {
           setLoggedIn(true);
-          localStorage.setItem("jwt", res.jwt);
+          localStorage.setItem("jwt", res.token);
+          setIsUserEmail(res.data.email);
           navigate("/", { replace: true });
         }
       })
       .catch((err) => console.log(err));
   };
 
-  function handleRegister({ email, password }) {
+  //регистрация
+  function handleRegister(email, password) {
     auth
       .register(email, password)
       .then((res) => {
-        console.log(res.jwt);
         if (res) {
-          navigate("/singin", { replace: true });
+          navigate("/signin", { replace: true });
           setIsConfirm(true);
           setIsInfoToolTipOpen(true);
         }
@@ -84,6 +89,14 @@ function App() {
       });
   }
 
+  //выход
+  function handleSignOut() {
+    setLoggedIn(false);
+    localStorage.removeItem("jwt");
+    navigate("/signin", { replace: true });
+  }
+
+  //добавление карточек
   React.useEffect(() => {
     if (loggedIn) {
       api
@@ -140,6 +153,7 @@ function App() {
       });
   }
 
+  //информация о пользователе
   React.useEffect(() => {
     if (loggedIn) {
       api
@@ -219,7 +233,7 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="root">
         <div className="content">
-          <Header email={isUserEmail} />
+          <Header email={isUserEmail} onSignOut={handleSignOut} />
           <Routes>
             <Route
               path="/"
@@ -237,13 +251,17 @@ function App() {
                 />
               }
             />
-            <Route path="/singin" element={<Login onLogin={handleLogin} />} />
             <Route
-              path="/singup"
-              element={<Register onRegister={handleRegister} />}
+              path="/signin"
+              element={<Login onLogin={handleLogin} onLoading={isLoading} />}
+            />
+            <Route
+              path="/signup"
+              element={
+                <Register onRegister={handleRegister} onLoading={isLoading} />
+              }
             />
           </Routes>
-
           <EditProfilePopup
             isOpen={isEditProfilePopupOpen}
             onClose={closeAllPopups}

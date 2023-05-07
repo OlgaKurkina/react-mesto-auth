@@ -1,5 +1,5 @@
 .login__input {
-    width: 358px;
+  width: 358px;
   font-size: 14px;
   line-height: 100%;
   background-color: rgba(0, 0, 0, 1);
@@ -11,12 +11,10 @@
   color: rgba(255, 255, 255, 1);
 }
 
-/*.login__input:nth-child(2n) {
-  margin-top: 13px;
-}
-
 @media screen and (max-width: 767px) {
   .login__input {
-    width: 238px;
+    width: 260px;
+    margin: 0 30px;
+    padding: 30px 0 13px 0;
   }
-}*/
+}

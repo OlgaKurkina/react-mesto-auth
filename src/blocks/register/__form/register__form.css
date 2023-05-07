@@ -4,3 +4,9 @@
   flex-direction: column;
   margin: 60px auto 0 auto;
 }
+
+@media screen and (max-width: 767px) {
+  .register__form {
+    margin: 0 auto;
+  }
+}

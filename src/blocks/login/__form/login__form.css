@@ -4,3 +4,10 @@
   flex-direction: column;
   margin: 60px auto 112px auto;
 }
+
+@media screen and (max-width: 767px) {
+  .login__form {
+    margin: 0 auto;
+    padding-bottom: 77px;
+  }
+}

@@ -2,24 +2,24 @@ import logo from "../images/Logo_vector.svg";
 import { Link } from "react-router-dom";
 import { Route, Routes } from "react-router-dom";
 
-export default function Header({ email, onSingOut }) {
+export default function Header({ email, onSignOut }) {
   return (
     <header className="header">
       <img className="header__logo" src={logo} alt="логотип Mesto" />
       <div className="header__routes">
         <Routes>
           <Route
-            path="/singin"
+            path="/signin"
             element={
-              <Link to="/singup" className="header__link">
+              <Link to="/signup" className="header__link">
                 Регистрация
               </Link>
             }
           />
           <Route
-            path="/singup"
+            path="/signup"
             element={
-              <Link to="/singin" className="header__link">
+              <Link to="/signin" className="header__link">
                 Вход
               </Link>
             }
@@ -29,7 +29,7 @@ export default function Header({ email, onSingOut }) {
             element={
               <>
                 <p className="header__email">{email}</p>
-                <button className="header__logOut" onClick={onSingOut}>
+                <button className="header__logout" onClick={onSignOut}>
                   Выйти
                 </button>
               </>
@@ -40,5 +40,3 @@ export default function Header({ email, onSingOut }) {
     </header>
   );
 }
-
-//export default Header;

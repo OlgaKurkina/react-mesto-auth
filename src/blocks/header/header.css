@@ -1,5 +1,5 @@
 .header {
-  margin: 0 200px 0 200px;
+  margin: 0 auto;
   padding-top: 45px;
   max-width: 880px;
   border-bottom: 1px solid rgba(84, 84, 84, .7);
@@ -9,10 +9,9 @@
   justify-content: space-between;
 }
 
-@media screen and (max-width: 1100px) {
+@media screen and (max-width: 1000px) {
   .header {
-    margin: 0 19px 0 19px;
-    padding-top: 45px;
+    margin: 0 19px;
   }
 }
 
