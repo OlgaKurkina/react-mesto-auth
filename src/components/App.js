@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import Header from "./Header";
 import Main from "./Main";
@@ -18,58 +18,21 @@ import { api } from "../utils/Api";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 
 function App() {
-  const [currentUser, setCurrentUser] = React.useState({});
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
-    React.useState(false);
-  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
-    React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState(null);
-  const [cards, setCards] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [isConfirmPopupOpen, setisConfirmPopupOpen] = React.useState(false);
-  const [deletedCard, setDeletedCard] = React.useState(null);
-  const [isConfirm, setIsConfirm] = React.useState(false);
-  const [isInfoToolTipOpen, setIsInfoToolTipOpen] = React.useState(false);
-  const [loggedIn, setLoggedIn] = React.useState(false);
-  const [isUserEmail, setIsUserEmail] = React.useState("");
+  const [currentUser, setCurrentUser] = useState({});
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState(null);
+  const [cards, setCards] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isConfirmPopupOpen, setisConfirmPopupOpen] = useState(false);
+  const [deletedCard, setDeletedCard] = useState(null);
+  const [isConfirm, setIsConfirm] = useState(false);
+  const [isInfoToolTipOpen, setIsInfoToolTipOpen] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [isUserEmail, setIsUserEmail] = useState("");
 
   const navigate = useNavigate();
-
-  React.useEffect(() => {
-    tokenCheck();
-  }, []);
-
-  //проверка токена
-  const tokenCheck = () => {
-    const jwt = localStorage.getItem("jwt");
-    if (jwt) {
-      auth
-        .checkToken(jwt)
-        .then((res) => {
-          if (res) {
-            setLoggedIn(true);
-            navigate("/", { replace: true });
-          }
-        })
-        .catch((err) => console.log(err));
-    }
-  };
-
-  //авторизация
-  const handleLogin = (email, password) => {
-    auth
-      .authorize(email, password)
-      .then((res) => {
-        if (res) {
-          setLoggedIn(true);
-          localStorage.setItem("jwt", res.token);
-          setIsUserEmail(res.data.email);
-          navigate("/", { replace: true });
-        }
-      })
-      .catch((err) => console.log(err));
-  };
 
   //регистрация
   function handleRegister(email, password) {
@@ -89,6 +52,41 @@ function App() {
       });
   }
 
+  //авторизация
+  const handleLogin = (email, password) => {
+    auth
+      .authorize(email, password)
+      .then((res) => {
+        if (res) {
+          setLoggedIn(true);
+          localStorage.setItem("jwt", res.token);
+          navigate("/", { replace: true });
+        }
+      })
+      .catch((err) => {
+        setIsConfirm(false);
+        setIsInfoToolTipOpen(true);
+        console.log(err);
+      });
+  };
+
+  //проверка токена
+  useEffect(() => {
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      auth
+        .checkToken(jwt)
+        .then((res) => {
+          if (res) {
+            setLoggedIn(true);
+            navigate("/", { replace: true });
+            setIsUserEmail(res.data.email);
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [loggedIn, navigate]);
+
   //выход
   function handleSignOut() {
     setLoggedIn(false);
@@ -97,7 +95,7 @@ function App() {
   }
 
   //добавление карточек
-  React.useEffect(() => {
+  useEffect(() => {
     if (loggedIn) {
       api
         .getCards()
@@ -154,7 +152,7 @@ function App() {
   }
 
   //информация о пользователе
-  React.useEffect(() => {
+  useEffect(() => {
     if (loggedIn) {
       api
         .getUserData()

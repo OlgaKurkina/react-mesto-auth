@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import PopupWithForm from "./PopupWithForm";
 
 export default function AddPlacePopup({
@@ -7,8 +7,8 @@ export default function AddPlacePopup({
   onAddNewCard,
   onLoading,
 }) {
-  const newPlace = React.useRef();
-  const newLink = React.useRef();
+  const newPlace = useRef();
+  const newLink = useRef();
 
   function handleSubmit(evt) {
     evt.preventDefault();

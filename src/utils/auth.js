@@ -1,6 +1,13 @@
 export const BASE_URL = "https://auth.nomoreparties.co";
 //export const BASE_URL = "http://104.131.160.75:3000";
 
+function getResponse(res) {
+  if (!res.ok) {
+    return Promise.reject(`Ошибка: ${res.status}`);
+  }
+  return res.json();
+}
+
 //регистрация
 export const register = (email, password) => {
   return fetch(`${BASE_URL}/signup`, {
@@ -10,13 +17,7 @@ export const register = (email, password) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ email, password }),
-  })
-    .then((res) => {
-      return res.json();
-    })
-    .then((res) => {
-      return res;
-    });
+  }).then((res) => getResponse(res));
 };
 
 //авторизация
@@ -28,7 +29,7 @@ export const authorize = (email, password) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ email, password }),
-  }).then((res) => res.json());
+  }).then((res) => getResponse(res));
 };
 
 //проверка токена
@@ -41,6 +42,6 @@ export const checkToken = (token) => {
       Authorization: `Bearer ${token}`,
     },
   })
-    .then((res) => res.json())
+    .then((res) => getResponse(res))
     .then((data) => data);
 };
